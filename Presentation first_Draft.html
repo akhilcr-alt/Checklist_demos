@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shield AI Australia: Onboarding for Growth & Compliance</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* * ===============================================
+         * DESIGN SCHEMA IMPLEMENTATION (Alternating B&W Theme)
+         * ===============================================
+         */
+        :root {
+            /* 1. Color Palette */
+            --color-background-primary: #050506; /* App background */
+            --color-background-dark: #1f1f1f;   /* Charcoal for dark slides */
+            --color-background-light: #ffffff;  /* White for light slides */
+            
+            --color-text-on-dark: #ffffff;
+            --color-text-on-dark-secondary: #bbbbbb;
+            --color-text-on-light: #1f1f1f; /* Charcoal text on light slides */
+            --color-text-on-light-secondary: #555555;
+            
+            --color-highlight-red-transparent: rgba(239, 68, 68, 0.5); /* Red with 50% transparency */
+
+            /* 2. Typography & Spacing */
+            --font-base: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-heading: "DM Sans", var(--font-base);
+            --font-size-sm: clamp(0.8rem, 0.8rem + ((1vw - 0.2rem) * 0.227), 0.9rem);
+            --font-size-md: clamp(1rem, 1rem + ((1vw - 0.2rem) * 0.227), 1.125rem);
+            --font-size-lg: clamp(1.75rem, 1.75rem + ((1vw - 0.2rem) * 0.227), 1.875rem);
+            --font-size-xl: clamp(2.5rem, 2.5rem + ((1vw - 0.48rem) * 2.885), 3.5rem);
+            --font-size-xxl: clamp(3.5rem, 3.5rem + ((1vw - 0.2rem) * 10.909), 6rem);
+            --spacing-sm: clamp(1rem, 3vw, 1.5rem);
+            --spacing-md: clamp(1.5rem, 1.8rem + ((1vw - 0.48rem) * 2.885), 2.5rem);
+            --spacing-lg: clamp(2.5rem, 8vw, 4rem);
+        }
+
+        /* * ===============================================
+         * BASE STYLES & CSS RESET
+         * ===============================================
+         */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: var(--color-background-primary);
+            font-family: var(--font-base);
+            font-size: var(--font-size-md);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            transition: color 0.6s ease-in-out;
+        }
+
+        /* * ===============================================
+         * PRESENTATION CONTAINER & SLIDE STYLES
+         * ===============================================
+         */
+        #presentation-container {
+            width: 100%;
+            max-width: 1366px; /* Increased size */
+            aspect-ratio: 16 / 9;
+            position: relative;
+            background-color: var(--color-background-primary);
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100%;
+            padding: var(--spacing-lg);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.6s ease-in-out;
+            color: var(--color-text-on-dark);
+            border-radius: 12px; /* Rounded Edges */
+        }
+        
+        main > .slide:nth-child(odd) { background-color: var(--color-background-dark); }
+        main > .slide:nth-child(even) { background-color: var(--color-background-light); }
+
+        main > .slide:nth-child(odd) { color: var(--color-text-on-dark); }
+        main > .slide:nth-child(odd) p, main > .slide:nth-child(odd) li, main > .slide:nth-child(odd) a { color: var(--color-text-on-dark-secondary); }
+
+        main > .slide:nth-child(even) { color: var(--color-text-on-light); }
+        main > .slide:nth-child(even) p, main > .slide:nth-child(even) li, main > .slide:nth-child(even) a { color: var(--color-text-on-light-secondary); }
+
+        .slide.active { display: flex; opacity: 1; }
+
+        /* Slide Content Styling */
+        .slide h1, .slide h2, .slide h3, .slide h4, .slide h5 {
+            font-family: var(--font-heading);
+            margin-bottom: var(--spacing-md);
+            line-height: 1.2;
+            color: inherit;
+        }
+        .slide h1 { font-size: var(--font-size-xxl); }
+        .slide h2 { font-size: var(--font-size-xl); }
+        .slide h3 { font-size: var(--font-size-lg); }
+        .slide h4 { font-size: var(--font-size-md); }
+        .slide h5 { font-size: var(--font-size-md); margin-bottom: var(--spacing-sm); }
+        .slide p { max-width: 75ch; margin-bottom: var(--spacing-sm); }
+        .slide ul { list-style: none; text-align: left; max-width: 60ch; }
+        .slide ul li { margin-bottom: 1rem; padding-left: 1.5rem; position: relative; }
+        .slide ul li::before { content: '›'; position: absolute; left: 0; font-weight: bold; }
+        main > .slide:nth-child(odd) ul li::before { color: var(--color-text-on-dark); }
+        main > .slide:nth-child(even) ul li::before { color: var(--color-text-on-light); }
+
+        .slide img { max-width: 80%; max-height: 60%; object-fit: contain; border-radius: 8px; }
+        .two-column { display: flex; width: 100%; gap: var(--spacing-md); align-items: center; }
+        .two-column > div { flex: 1; text-align: left; padding: 0 var(--spacing-sm); }
+        .three-column { display: flex; width: 100%; gap: var(--spacing-sm); align-items: flex-start; }
+        .three-column > div { flex: 1; text-align: center; }
+
+        /* * ===============================================
+         * CLICKABLE ITEMS & NAVIGATION
+         * ===============================================
+         */
+        .clickable {
+            cursor: pointer;
+            padding: 0.25em 0.5em;
+            border-radius: 6px;
+            transition: background-color 0.3s ease-in-out;
+            display: inline-block;
+        }
+
+        .clickable:hover {
+            background-color: var(--color-highlight-red-transparent);
+        }
+        
+        a.clickable {
+            text-decoration: none;
+        }
+
+        .nav-button {
+            position: absolute;
+            top: var(--spacing-md); /* Moved to top */
+            transform: translateY(0);
+            z-index: 10;
+            background-color: transparent;
+            border: none;
+            font-family: var(--font-base);
+            font-weight: bold;
+            font-size: 1rem;
+            padding: 0;
+            cursor: pointer;
+            color: inherit;
+        }
+        
+        #prev-btn { left: var(--spacing-md); }
+        #next-btn { right: var(--spacing-md); }
+        
+        #slide-counter {
+            position: absolute;
+            bottom: var(--spacing-sm);
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1rem;
+            font-family: monospace;
+            color: inherit;
+            z-index: 10;
+        }
+        
+        .dark-slide-active { color: var(--color-text-on-dark); }
+        .light-slide-active { color: var(--color-text-on-light); }
+        .dark-slide-active #slide-counter { color: var(--color-text-on-dark-secondary); }
+        .light-slide-active #slide-counter { color: var(--color-text-on-light-secondary); }
+
+        /* Custom Accordion Styles */
+        .accordion-title { cursor: pointer; }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+        .accordion-content.open {
+            max-height: 500px; /* Adjust as needed */
+            padding-top: var(--spacing-sm);
+            padding-bottom: var(--spacing-sm);
+        }
+
+        /* PESTLE Slide Styles */
+        .factor-item .clickable {
+            transition: all 0.3s ease;
+            opacity: 0.5;
+            width: 100%;
+        }
+        .factor-item.active .clickable, .factor-item:hover .clickable {
+            opacity: 1;
+            background-color: rgba(0,0,0,0.05); /* Default light highlight */
+        }
+        .factor-item.active .clickable:hover, .factor-item:hover .clickable:hover {
+             background-color: var(--color-highlight-red-transparent);
+        }
+        .factor-details {
+            display: none; /* Hide by default */
+        }
+        .factor-details.active {
+            display: block; /* Show active one */
+        }
+        .factor-details h5 {
+            color: var(--color-text-on-light);
+        }
+
+        /* Scrollable slide style */
+        .slide-scrollable {
+            justify-content: flex-start;
+            overflow-y: auto;
+        }
+        .slide-scrollable::-webkit-scrollbar { width: 8px; }
+        .slide-scrollable::-webkit-scrollbar-track { background: #eee; border-radius: 10px; }
+        .slide-scrollable::-webkit-scrollbar-thumb { background: #888; border-radius: 10px; }
+        .slide-scrollable::-webkit-scrollbar-thumb:hover { background: #555; }
+
+    </style>
+</head>
+<body>
+
+    <main id="presentation-container">
+        <!-- Slide 1: Title Slide (Dark) -->
+        <section class="slide">
+            <div style="position: absolute; top: var(--spacing-lg); right: var(--spacing-lg);">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/9d/SAI-Logo-Horizontal-Black_%281%29.png" alt="Shield AI Logo" style="max-height: 30px; filter: invert(1);">
+            </div>
+            <h2>Shield AI Australia</h2>
+            <h1>Onboarding for Growth &amp; Compliance</h1>
+            <p>[by Ragini (Gini) Jalihal]</p>
+        </section>
+
+        <!-- Slide 2: The Problem Statement (Light) -->
+        <section class="slide">
+            <h3>The Problem Statement</h3>
+            <p style="font-weight: bold; line-height: 1.8;">How would you design a scalable <a href="#" class="clickable internal-link" data-slide-to="5" style="font-weight: normal; color: inherit; text-decoration: none; background: rgba(0,0,0,0.05);">[ 30‑60‑90‑day ]</a> onsite onboarding plan for Shield AI’s rapidly expanding APAC workforce in Australia that balances <a href="#" class="clickable internal-link" data-slide-to="3" style="font-weight: normal; color: inherit; text-decoration: none; background: rgba(0,0,0,0.05);">[ strategic foresight ]</a> with lean <a href="#" class="clickable internal-link" data-slide-to="6" style="font-weight: normal; color: inherit; text-decoration: none; background: rgba(0,0,0,0.05);">[ tactical execution ]</a>, leverages your <span class="clickable" style="font-weight: normal; background: rgba(0,0,0,0.05);">[ Regional HR expertise ]</span>, and enables seamless collaboration with a predominantly US‑based People team?</p>
+        </section>
+
+        <!-- Slide 3: The Opportunity in Data (Dark) -->
+        <section class="slide">
+            <div class="two-column">
+                <div>
+                    <h3>The Opportunity: APAC is Driving Our Growth</h3>
+                    <p>This isn't a regional side project; it's central to our global growth strategy and requires a dedicated, scalable solution to succeed.</p>
+                    <div style="display: flex; gap: var(--spacing-md); margin-top: var(--spacing-md);">
+                        <div>
+                            <h1 style="margin-bottom: 0;">125%</h1>
+                            <p>Projected AU Headcount Growth (2025)</p>
+                        </div>
+                        <div>
+                            <h1 style="margin-bottom: 0;">33%</h1>
+                            <p>APAC's Share of Global Growth (2025)</p>
+                        </div>
+                    </div>
+                </div>
+                <div style="height: 350px;">
+                    <canvas id="opportunityChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: The Strategic Context (Light) -->
+        <section class="slide">
+            <h3>The Strategic Context: Forces at Play</h3>
+            <div class="two-column" style="width: 100%; max-width: 1100px; gap: var(--spacing-lg); align-items: flex-start; margin-top: var(--spacing-md);">
+                <!-- Left Column: Factors -->
+                <div style="flex: 2; display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-sm); text-align: left;">
+                    <div class="factor-item active" data-factor="political">
+                        <h4 class="clickable" style="font-size: var(--font-size-md); margin-bottom: 0;">[ Political ]</h4>
+                    </div>
+                    <div class="factor-item" data-factor="economic">
+                        <h4 class="clickable" style="font-size: var(--font-size-md); margin-bottom: 0;">[ Economic ]</h4>
+                    </div>
+                    <div class="factor-item" data-factor="social">
+                        <h4 class="clickable" style="font-size: var(--font-size-md); margin-bottom: 0;">[ Social ]</h4>
+                    </div>
+                    <div class="factor-item" data-factor="technological">
+                        <h4 class="clickable" style="font-size: var(--font-size-md); margin-bottom: 0;">[ Technological ]</h4>
+                    </div>
+                     <div class="factor-item" data-factor="legal">
+                        <h4 class="clickable" style="font-size: var(--font-size-md); margin-bottom: 0;">[ Legal ]</h4>
+                    </div>
+                     <div class="factor-item" data-factor="environmental">
+                        <h4 class="clickable" style="font-size: var(--font-size-md); margin-bottom: 0;">[ Environmental ]</h4>
+                    </div>
+                </div>
+                <!-- Right Column: Details -->
+                <div style="flex: 3; text-align: left; border-left: 1px solid #ddd; padding-left: var(--spacing-lg); min-height: 250px;">
+                    <!-- Political Details -->
+                    <div class="factor-details active" data-factor-details="political">
+                        <h5>What’s Happening</h5>
+                        <p style="font-size: var(--font-size-sm);">Defence budgets in the US, Australia and AUKUS partners are climbing, but local content rules and export‑control paperwork are getting tighter.</p>
+                        <h5>What HR/Leadership Should Do</h5>
+                        <ul style="font-size: var(--font-size-sm);">
+                            <li>Hire/retain compliance specialists and ITAR‑savvy program managers.</li>
+                            <li>Grow an Australian engineering base so bids score higher on “sovereign capability.”</li>
+                        </ul>
+                    </div>
+                    <!-- Economic Details -->
+                    <div class="factor-details" data-factor-details="economic">
+                        <h5>What’s Happening</h5>
+                        <p style="font-size: var(--font-size-sm);">We’re well‑funded (&gt;US $1bn raised) but interest rates are high and customers want proven results before signing big, multi‑year deals.</p>
+                        <h5>What HR/Leadership Should Do</h5>
+                        <ul style="font-size: var(--font-size-sm);">
+                            <li>Prioritise roles that turn pilots into production contracts (BD engineers, sustainment teams).</li>
+                            <li>Keep tight controls on burn until revenue ramps.</li>
+                        </ul>
+                    </div>
+                    <!-- Social Details -->
+                    <div class="factor-details" data-factor-details="social">
+                        <h5>What’s Happening</h5>
+                        <p style="font-size: var(--font-size-sm);">People worry about “killer robots.” Talent - especially engineers - want to see a clear, ethical mission.</p>
+                        <h5>What HR/Leadership Should Do</h5>
+                        <ul style="font-size: var(--font-size-sm);">
+                            <li>Launch and publicise a “Responsible Autonomy” charter; make ethics training part of onboarding.</li>
+                            <li>Highlight our purpose (“protect service members &amp; civilians”) in recruitment marketing.</li>
+                        </ul>
+                    </div>
+                    <!-- Technological Details -->
+                    <div class="factor-details" data-factor-details="technological">
+                        <h5>What’s Happening</h5>
+                        <p style="font-size: var(--font-size-sm);">Our Hivemind autonomy software is a big differentiator, but it needs constant R&amp;D and secure chip supply.</p>
+                        <h5>What HR/Leadership Should Do</h5>
+                        <ul style="font-size: var(--font-size-sm);">
+                            <li>Invest in continuous‑learning budgets and clear career paths for AI talent.</li>
+                            <li>Build partnerships with local suppliers to buffer any chip or export disruptions.</li>
+                        </ul>
+                    </div>
+                     <!-- Legal Details -->
+                     <div class="factor-details" data-factor-details="legal">
+                        <h5>What’s Happening</h5>
+                        <p style="font-size: var(--font-size-sm);">New rules (DoD 3000.09, Australian DSTG guidance) demand explainable, well‑tested AI. Clearance timelines can stall hiring.</p>
+                        <h5>What HR/Leadership Should Do</h5>
+                        <ul style="font-size: var(--font-size-sm);">
+                            <li>Adopt “clear‑to‑hire” recruiting (start security vetting before day 1).</li>
+                            <li>Set up an ethics &amp; safety board to show regulators - and staff - we’re serious.</li>
+                        </ul>
+                    </div>
+                     <!-- Environmental Details -->
+                     <div class="factor-details" data-factor-details="environmental">
+                        <h5>What’s Happening</h5>
+                        <p style="font-size: var(--font-size-sm);">Drones save fuel compared with manned aircraft, but battery waste and ESG reporting are becoming procurement check‑boxes.</p>
+                        <h5>What HR/Leadership Should Do</h5>
+                        <ul style="font-size: var(--font-size-sm);">
+                            <li>Add an ESG lead to track e‑waste and sustainable sourcing.</li>
+                            <li>Include “green operations” metrics in supplier audits.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: Our Proposed Solution (Dark) -->
+        <section class="slide">
+            <h3>Our Proposed Solution: A Scalable Onboarding Platform</h3>
+            <div class="three-column" style="margin-top: var(--spacing-md);">
+                <div>
+                    <i data-lucide="database-zap" style="width: 48px; height: 48px; margin-bottom: var(--spacing-sm);"></i>
+                    <h4>Automate at Source</h4>
+                    <p style="font-size: var(--font-size-sm);">A single source of truth for all data, documents, and compliance artifacts.</p>
+                </div>
+                <div>
+                    <i data-lucide="shield-check" style="width: 48px; height: 48px; margin-bottom: var(--spacing-sm);"></i>
+                    <h4>Compliance-by-Default</h4>
+                    <p style="font-size: var(--font-size-sm);">Embed Fair Work, NES checks, and security clearances into automated workflows.</p>
+                </div>
+                <div>
+                    <i data-lucide="bar-chart-3" style="width: 48px; height: 48px; margin-bottom: var(--spacing-sm);"></i>
+                    <h4>Data-Led Operations</h4>
+                    <p style="font-size: var(--font-size-sm);">Instrument the platform with KPIs like Time-to-Hire and Onboarding CSAT.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: The 90-Day Execution Plan (Light) -->
+        <section class="slide slide-scrollable">
+            <h3 style="padding-bottom: var(--spacing-md);">The 90-Day Execution Plan</h3>
+            <div style="width: 100%; max-width: 80ch; text-align: left;">
+                <div class="accordion-item" style="border: 1px solid #eee; border-radius: 8px; margin-bottom: var(--spacing-sm);">
+                    <div class="accordion-title clickable" style="padding: var(--spacing-sm);">
+                        <h4 style="margin: 0;">[ Phase 1: Discover &amp; Stabilise (Days 1-30) ]</h4>
+                    </div>
+                    <div class="accordion-content" style="padding-left: var(--spacing-sm); padding-right: var(--spacing-sm);">
+                        <ul>
+                            <li>Gap-analysis workshop with US People Ops; map existing vs AU legal needs.</li>
+                            <li>Draft "AU Onboarding Compliance Checklist" (FWIS, Closing Loopholes, etc.).</li>
+                            <li>Select SaaS onboarding platform &amp; sign local data-processing addendum.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="accordion-item" style="border: 1px solid #eee; border-radius: 8px; margin-bottom: var(--spacing-sm);">
+                    <div class="accordion-title clickable" style="padding: var(--spacing-sm);">
+                        <h4 style="margin: 0;">[ Phase 2: Build &amp; Pilot (Days 31-60) ]</h4>
+                    </div>
+                    <div class="accordion-content" style="padding-left: var(--spacing-sm); padding-right: var(--spacing-sm);">
+                        <ul>
+                            <li>Design workflow incl. e-contracts, TFN declaration, super choice, and security vetting.</li>
+                            <li>Integrate HRIS→Okta→IT ticketing for Day-1 access.</li>
+                            <li>Onboard first test cohort 100% through the new platform.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="accordion-item" style="border: 1px solid #eee; border-radius: 8px;">
+                    <div class="accordion-title clickable" style="padding: var(--spacing-sm);">
+                        <h4 style="margin: 0;">[ Phase 3: Launch &amp; Optimise (Days 61-90) ]</h4>
+                    </div>
+                    <div class="accordion-content" style="padding-left: var(--spacing-sm); padding-right: var(--spacing-sm);">
+                        <ul>
+                            <li>Full production launch for all new Australian hires.</li>
+                            <li>Go-live with data dashboards tracking key success metrics.</li>
+                            <li>Establish continuous-improvement backlog with US People Ops.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: HR Playbook (Dark) -->
+        <section class="slide">
+            <h3>HR Playbook: A Lasting Resource</h3>
+            <p>This project will create a central hub of resources for hiring managers and the local HR team.</p>
+            <div style="margin-top: var(--spacing-md); text-align: center;">
+                <ul style="display: inline-block; text-align: left;">
+                    <!-- Replace '#' with your actual links -->
+                    <li><a href="#" target="_blank" rel="noopener noreferrer" class="clickable">[ Onboarding Checklist for Managers ]</a></li>
+                    <li><a href="https://www.fairwork.gov.au/employment-conditions/national-employment-standards" target="_blank" rel="noopener noreferrer" class="clickable">[ AU Compliance Guide (Fair Work, NES) ]</a></li>
+                    <li><a href="#" target="_blank" rel="noopener noreferrer" class="clickable">[ Security &amp; IT Onboarding Process ]</a></li>
+                    <li><a href="https://notebooklm.google.com/notebook/5878ef43-5396-4b1f-82f4-68fa862689be" target="_blank" rel="noopener noreferrer" class="clickable">[ Long term HR Playbook]</a></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 8: Defining Success (Light) -->
+        <section class="slide">
+            <h3>Defining Success</h3>
+            <div class="three-column" style="margin-top: var(--spacing-md); align-items: stretch; gap: var(--spacing-md);">
+                <div class="clickable" style="border: 1px solid #ddd; padding: var(--spacing-md); border-radius: 8px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div style="height: 48px; display: flex; align-items: center; justify-content: center;"><i data-lucide="calendar-days" style="width: 48px; height: 48px;"></i></div>
+                    <div>
+                        <h2 style="margin-top: var(--spacing-sm); margin-bottom: 0; font-size: var(--font-size-xl);">≤7 days</h2>
+                        <p>Time-to-Hire Paperwork</p>
+                    </div>
+                </div>
+                <div class="clickable" style="border: 1px solid #ddd; padding: var(--spacing-md); border-radius: 8px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div style="height: 48px; display: flex; align-items: center; justify-content: center;">
+                        <div style="display: flex; justify-content: center; gap: 4px;">
+                            <i data-lucide="star" style="width: 24px; height: 24px; color: #facc15; fill: #facc15;"></i>
+                            <i data-lucide="star" style="width: 24px; height: 24px; color: #facc15; fill: #facc15;"></i>
+                            <i data-lucide="star" style="width: 24px; height: 24px; color: #facc15; fill: #facc15;"></i>
+                            <i data-lucide="star" style="width: 24px; height: 24px; color: #facc15; fill: #facc15;"></i>
+                            <i data-lucide="star-half" style="width: 24px; height: 24px; color: #facc15; fill: #facc15;"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <h2 style="margin-top: var(--spacing-sm); margin-bottom: 0; font-size: var(--font-size-xl);">≥4.5/5</h1>
+                        <p>Onboarding CSAT</p>
+                    </div>
+                </div>
+                <div class="clickable" style="border: 1px solid #ddd; padding: var(--spacing-md); border-radius: 8px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div style="height: 48px; display: flex; align-items: center; justify-content: center;"><i data-lucide="shield-check" style="width: 48px; height: 48px;"></i></div>
+                    <div>
+                        <h2 style="margin-top: var(--spacing-sm); margin-bottom: 0; font-size: var(--font-size-xl);">0</h2>
+                        <p>Compliance Audit Findings</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 9: Risk & Mitigation (Dark) -->
+        <section class="slide" style="padding: 0; align-items: stretch;">
+            <div style="display: flex; width: 100%; height: 100%;">
+                <!-- Left side: Risks -->
+                <div style="flex: 1; background-color: var(--color-background-dark); padding: var(--spacing-lg); text-align: left; border-radius: 12px 0 0 12px;">
+                    <h3 style="margin-bottom: var(--spacing-lg);">[ Risk ]</h3>
+                    <div style="margin-bottom: var(--spacing-md);">
+                        <h4 style="color: white;">Platform Fails Security Accreditation</h4>
+                        <p style="font-size: var(--font-size-sm);">Platform fails security accreditation for Defence clients.</p>
+                    </div>
+                    <div style="margin-bottom: var(--spacing-md);">
+                        <h4 style="color: white;">US Templates Override AU Settings</h4>
+                        <p style="font-size: var(--font-size-sm);">US templates override AU settings during HRIS updates.</p>
+                    </div>
+                    <div>
+                        <h4 style="color: white;">Time-Zone Delays Stall Approvals</h4>
+                        <p style="font-size: var(--font-size-sm);">Time-zone delays stall approvals for critical onboarding tasks.</p>
+                    </div>
+                </div>
+                <!-- Right side: Mitigations -->
+                <div style="flex: 1; background-color: var(--color-background-light); color: var(--color-text-on-light); padding: var(--spacing-lg); text-align: left; border-radius: 0 12px 12px 0;">
+                    <h3 style="color: var(--color-text-on-light); margin-bottom: var(--spacing-lg);">[ Mitigation ]</h3>
+                    <div style="margin-bottom: var(--spacing-md);">
+                        <h4 style="color: var(--color-text-on-light);">Engage Certified Host</h4>
+                        <p style="font-size: var(--font-size-sm); color: var(--color-text-on-light-secondary);">Engage ASD-certified host; conduct IRAP assessment in parallel.</p>
+                    </div>
+                    <div style="margin-bottom: var(--spacing-md);">
+                        <h4 style="color: var(--color-text-on-light);">Implement Change Control</h4>
+                        <p style="font-size: var(--font-size-sm); color: var(--color-text-on-light-secondary);">Role-based permissions &amp; a change-control gate requiring AU HR sign-off.</p>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--color-text-on-light);">Automate Escalations</h4>
+                        <p style="font-size: var(--font-size-sm); color: var(--color-text-on-light-secondary);">Auto-escalation after 12h; defined delegation matrix in AU time zone.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 10: Conclusion (Light) -->
+        <section class="slide">
+            <h3>Conclusion &amp; Next Step</h3>
+            <p>This platform is the operational backbone for our success in Australia. It de-risks our expansion, enables scalable growth, and frees our lean HR team to focus on strategic talent initiatives.</p>
+            <div style="margin-top: var(--spacing-md);">
+                <span class="clickable" style="border: 1px solid #ccc; padding: var(--spacing-sm); border-radius: 8px; font-size: var(--font-size-lg);">Begin the 90-Day Execution Plan</span>
+            </div>
+        </section>
+        
+        <!-- Slide 11: Q&A (Dark) -->
+        <section class="slide">
+            <h2>Q&amp;A</h2>
+            <p>[Ragini (Gini) Jalihal- People & Culture Leader Ex-PwC, Ex-Amazon]</p>
+        </section>
+
+        <!-- Navigation controls -->
+        <button id="prev-btn" class="nav-button"><span class="clickable">[ Prev ]</span></button>
+        <button id="next-btn" class="nav-button"><span class="clickable">[ Next ]</span></button>
+        <div id="slide-counter"></div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const slideCounter = document.getElementById('slide-counter');
+            const body = document.body;
+            
+            let currentSlide = 0;
+
+            function showSlide(index) {
+                if (index >= slides.length) {
+                    currentSlide = 0;
+                } else if (index < 0) {
+                    currentSlide = slides.length - 1;
+                } else {
+                    currentSlide = index;
+                }
+
+                slides.forEach(slide => {
+                    slide.classList.remove('active');
+                });
+                slides[currentSlide].classList.add('active');
+                
+                const isLightSlide = (currentSlide + 1) % 2 === 0;
+
+                if (isLightSlide) {
+                    body.classList.add('light-slide-active');
+                    body.classList.remove('dark-slide-active');
+                } else {
+                    body.classList.add('dark-slide-active');
+                    body.classList.remove('light-slide-active');
+                }
+                
+                slideCounter.textContent = `${currentSlide + 1} / ${slides.length}`;
+            }
+
+            nextBtn.addEventListener('click', () => {
+                showSlide(currentSlide + 1);
+            });
+            prevBtn.addEventListener('click', () => {
+                showSlide(currentSlide - 1);
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' || e.key === ' ') {
+                    showSlide(currentSlide + 1);
+                } else if (e.key === 'ArrowLeft') {
+                    showSlide(currentSlide - 1);
+                }
+            });
+            
+            // Accordion functionality
+            document.querySelectorAll('.accordion-title').forEach(title => {
+                title.addEventListener('click', () => {
+                    const content = title.nextElementSibling;
+                    content.classList.toggle('open');
+                });
+            });
+
+            // PESTLE slide functionality
+            const factorItems = document.querySelectorAll('.factor-item');
+            const factorDetails = document.querySelectorAll('.factor-details');
+
+            factorItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const factor = item.getAttribute('data-factor');
+
+                    // Update active state for list items
+                    factorItems.forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
+
+                    // Show the corresponding details
+                    factorDetails.forEach(detail => {
+                        if (detail.getAttribute('data-factor-details') === factor) {
+                            detail.classList.add('active');
+                        } else {
+                            detail.classList.remove('active');
+                        }
+                    });
+                });
+            });
+
+            // Internal slide linking
+            document.querySelectorAll('.internal-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const slideIndex = parseInt(link.getAttribute('data-slide-to'), 10);
+                    showSlide(slideIndex);
+                });
+            });
+
+            // Initialize the first slide and UI theme
+            showSlide(0);
+            lucide.createIcons();
+
+            // Chart.js implementation for Slide 3
+            const ctx = document.getElementById('opportunityChart');
+            if(ctx) {
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['2023', '2024', '2025'],
+                        datasets: [{
+                            label: 'APAC Contribution to Global Growth',
+                            data: [0, 5.3, 32.9],
+                            borderColor: 'rgba(255, 255, 255, 0.8)',
+                            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            x: { 
+                                ticks: { color: 'rgba(255, 255, 255, 0.5)' },
+                                grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                            },
+                            y: { 
+                                beginAtZero: true,
+                                ticks: { color: 'rgba(255, 255, 255, 0.5)' },
+                                grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                                title: { display: true, text: '% of Global Growth', color: 'rgba(255, 255, 255, 0.5)' }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
