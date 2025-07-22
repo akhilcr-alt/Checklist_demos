@@ -429,22 +429,7 @@
             </div>
         </section>
 
-        <!-- Slide 7: HR Playbook (Dark) -->
-        <section class="slide">
-            <h3>HR Playbook: A Lasting Resource</h3>
-            <p>This project will create a central hub of resources for hiring managers and the local HR team.</p>
-            <div style="margin-top: var(--spacing-md); text-align: center;">
-                <ul style="display: inline-block; text-align: left;">
-                    <!-- Replace '#' with your actual links -->
-                    <li><a href="Manger onboarding_Checklist.html" target="_blank" rel="noopener noreferrer" class="clickable">[ Onboarding Checklist for Managers ]</a></li>
-                    <li><a href="https://www.fairwork.gov.au/employment-conditions/national-employment-standards" target="_blank" rel="noopener noreferrer" class="clickable">[ AU Compliance Guide (Fair Work, NES) ]</a></li>
-                    <li><a href="IT system_checklist.html" target="_blank" rel="noopener noreferrer" class="clickable">[ Security &amp; IT Onboarding Process ]</a></li>
-                    <li><a href="https://notebooklm.google.com/notebook/5878ef43-5396-4b1f-82f4-68fa862689be" target="_blank" rel="noopener noreferrer" class="clickable">[ Long-term HR Strategy Plan]</a></li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- Slide 8: Defining Success (Light) -->
+        <!-- Slide 7: Defining Success (Light) -->
         <section class="slide">
             <h3>Defining Success</h3>
             <div class="three-column" style="margin-top: var(--spacing-md); align-items: stretch; gap: var(--spacing-md);">
@@ -480,12 +465,12 @@
             </div>
         </section>
 
-        <!-- Slide 9: Risk & Mitigation (Dark) -->
+        <!-- Slide 8: Risk & Mitigation (Dark) -->
         <section class="slide" style="padding: 0; align-items: stretch;">
             <div style="display: flex; width: 100%; height: 100%;">
                 <!-- Left side: Risks -->
                 <div style="flex: 1; background-color: var(--color-background-dark); padding: var(--spacing-lg); text-align: left; border-radius: 12px 0 0 12px; padding-top: calc(var(--spacing-lg) + 2rem);">
-                    <h3 style="margin-bottom: var(--spacing-lg);">[ Risk ]</h3>
+                    <h3 style="margin-bottom: var(--spacing-lg); color: var(--color-text-on-dark);">[ Risk ]</h3>
                     <div style="margin-bottom: var(--spacing-md);">
                         <h4 style="color: white;">Platform Fails Security Accreditation</h4>
                         <p style="font-size: var(--font-size-sm);">Platform fails security accreditation for Defence clients.</p>
@@ -515,6 +500,21 @@
                         <p style="font-size: var(--font-size-sm); color: var(--color-text-on-light-secondary);">Auto-escalation after 12h; defined delegation matrix in AU time zone.</p>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- Slide 9: HR Playbook (Dark) -->
+        <section class="slide">
+            <h3>HR Playbook: A Lasting Resource</h3>
+            <p>This project will create a central hub of resources for hiring managers and the local HR team.</p>
+            <div style="margin-top: var(--spacing-md); text-align: center;">
+                <ul style="display: inline-block; text-align: left;">
+                    <!-- Replace '#' with your actual links -->
+                    <li><a href="Manger onboarding_Checklist.html" target="_blank" rel="noopener noreferrer" class="clickable">[ Onboarding Checklist for Managers ]</a></li>
+                    <li><a href="https://www.fairwork.gov.au/employment-conditions/national-employment-standards" target="_blank" rel="noopener noreferrer" class="clickable">[ AU Compliance Guide (Fair Work, NES) ]</a></li>
+                    <li><a href="IT system_checklist.html" target="_blank" rel="noopener noreferrer" class="clickable">[ Security &amp; IT Onboarding Process ]</a></li>
+                    <li><a href="https://notebooklm.google.com/notebook/5878ef43-5396-4b1f-82f4-68fa862689be" target="_blank" rel="noopener noreferrer" class="clickable">[ Long-term HR Strategy Plan]</a></li>
+                </ul>
             </div>
         </section>
 
@@ -563,6 +563,8 @@
                 });
                 slides[currentSlide].classList.add('active');
                 
+                // The nth-child selector in CSS handles the alternating colors automatically.
+                // This logic determines the color for the floating nav buttons and counter.
                 const isLightSlide = (currentSlide + 1) % 2 === 0;
 
                 if (isLightSlide) {
@@ -573,11 +575,14 @@
                     body.classList.remove('light-slide-active');
                 }
                 
-                // Special handling for split-color slide 9
-                if (currentSlide === 8) { // 0-indexed, so 8 is slide 9
-                    nextBtn.style.color = 'var(--color-text-on-light)';
+                // Special handling for the split-color Risk/Mitigation slide.
+                const riskSlideIndex = Array.from(slides).findIndex(s => s.querySelector('h3')?.textContent.includes('[ Risk ]'));
+                if (currentSlide === riskSlideIndex) { 
+                    prevBtn.style.color = 'var(--color-text-on-dark)'; // Set prev button to white for the dark background
+                    nextBtn.style.color = 'var(--color-text-on-light)'; // Set next button to dark for the light background
                 } else {
-                    nextBtn.style.color = ''; // Revert to default
+                    prevBtn.style.color = ''; // Revert to default inherited color
+                    nextBtn.style.color = ''; // Revert to default inherited color
                 }
                 
                 slideCounter.textContent = `${currentSlide + 1} / ${slides.length}`;
